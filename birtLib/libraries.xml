@@ -1,0 +1,42 @@
+
+<!-- 
+
+NOTE: The libraries are imported in the exact order mentioned in this file.
+If the order of the libraries is not mentioned correctly, then the report import may fail.
+
+For Example:
+
+library1 (does not depended on anything)
+library2 (depends on library1)
+library3 (does not depended on anything)
+library4 (depends on library 2)
+
+an example:
+	<library name="WorkorderListParam.rptlibrary">
+		<attribute name="filename">WorkorderListParam.rptlibrary</attribute>
+		<attribute name="description">Workorder List with Parameters Library</attribute>
+		
+		<resources>
+			<resource>
+				<reference>workorderlistparam.properties</reference>
+				<filename>workorderlistparam.properties</filename>
+			</resource>
+		</resources>
+	</library>
+
+
+-->
+
+<libraries>
+	<library name="MaximoSystemLibrary.rptlibrary">
+		<attribute name="filename">MaximoSystemLibrary.rptlibrary</attribute>
+		<attribute name="description">MAXIMO System Report Library</attribute>
+		<resources>
+			<resource>
+				<reference>IBM_logo_Black.gif</reference>
+				<filename>IBM_logo_Black.gif</filename>
+			</resource>
+		</resources>
+	</library>
+
+</libraries>

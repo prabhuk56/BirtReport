@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="comments">IBM Confidential
+
+OCO Source Materials
+
+5724-M19
+
+(C) COPYRIGHT IBM CORP. 2006
+
+The source code for this program is not published or otherwise
+divested of its trade secrets, irrespective of what has been
+deposited with the U.S. Copyright Office.
+
+09-19764@000</property>
+    <property name="createdBy">Eclipse BIRT Designer Version 4.3.1.v201309091055 Build &lt;4.3.1.v20130917-1035></property>
+    <html-property name="description">This template will create a report having a single header with multiple rows of data.</html-property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[importPackage(Packages.com.ibm.tivoli.maximo.report.script);
+
+mxReportScriptContext = MXReportScriptContext.initialize(reportContext);]]></method>
+    <method name="beforeFactory"><![CDATA[// Remove page break intervals from PDF output
+if ( (reportContext.getParameterValue("usepagebreaks") == "false")|| reportContext.getOutputFormat() == "pdf" ) {
+	// Give each table in the report a name, and add the names to the list below, e.g. ["mainTable", "childTable1"]
+	var tableListing = ["mainTable"];
+	for each(var tableName in tableListing) {
+		var table = reportContext.getReportRunnable().designHandle.getDesignHandle().findElement(tableName)
+		if (table != null)
+		{
+			table.setProperty("pageBreakInterval", 0);
+		}
+	}
+}]]></method>
+    <method name="afterFactory"><![CDATA[MXReportScriptContext.close();]]></method>
+    <property name="theme">MaximoSystemLibrary.maximoTheme</property>
+    <text-property name="displayName">Tivoli Maximo List Template</text-property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">144</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">MaximoSystemLibrary.rptlibrary</property>
+            <property name="namespace">MaximoSystemLibrary</property>
+        </structure>
+    </list-property>
+    <template-parameter-definitions>
+        <template-parameter-definition name="NewTemplateParameterDefinition" id="71">
+            <property name="allowedType">Label</property>
+            <text-property name="description">Double-click to enter the report title.</text-property>
+            <default>
+                <label id="72">
+                    <text-property name="text">Report Title</text-property>
+                </label>
+            </default>
+        </template-parameter-definition>
+    </template-parameter-definitions>
+    <parameters>
+        <scalar-parameter name="where" id="25">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">1=1</value>
+            </simple-property-list>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="appname" id="200">
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="paramdelimiter" id="202">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="paramstring" id="201">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="usepagebreaks" id="342">
+            <property name="hidden">true</property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">true</value>
+            </simple-property-list>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="maximoDataSource" id="64" extends="MaximoSystemLibrary.maximoDataSource"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="dataSet" id="5">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">BILLBATCHNUM</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">BILLENDDATE</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">PREMISES</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">STARTDATE</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">ENDDATE</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">LINEPRICE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">DESCRIPTION</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">BILLBATCHNUM</property>
+                    <property name="alias">INVOICENUM</property>
+                    <text-property name="displayName" key="Invoicenum">invonum</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">BILLENDDATE</property>
+                    <property name="alias">Bill Date</property>
+                    <text-property name="displayName" key="BILLENDDATE">billdate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PREMISES</property>
+                    <property name="alias">PREMISE</property>
+                    <text-property name="displayName" key="PREMISES">PREMISES</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">STARTDATE</property>
+                    <property name="alias">AGREEMENTSTART</property>
+                    <text-property name="displayName" key="STARTDATE">STARTDATE</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ENDDATE</property>
+                    <property name="alias">AGREEMENTEND</property>
+                    <text-property name="displayName" key="ENDDATE">ENDDATE</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">LINEPRICE</property>
+                    <property name="alias">PRICE</property>
+                    <text-property name="displayName" key="LINEPRICE">LINEPRICE</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">DESCRIPTION</property>
+                    <property name="alias">DESCR</property>
+                    <text-property name="displayName" key="DESCRIPTION">DESCRIPTION</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">INVOICENUM</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">Bill Date</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">PREMISE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">AGREEMENTSTART</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">AGREEMENTEND</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">PRICE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">DESCR</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">maximoDataSource</property>
+            <method name="open"><![CDATA[maximoDataSet = MXReportDataSetProvider.create(this.getDataSource().getName(), this.getName());
+maximoDataSet.open();
+
+var sqlText = new String();
+
+// Add query to sqlText variable.
+sqlText = "select billbatch.BILLBATCHNUM as invonum,custom.name as PREMISES,agreement.startdate as STARTDATE,"
++"agreement.enddate as ENDDATE, billline.BILLEDPRICE as LINEPRICE,salesorder.DESCRIPTION  as DESCRIPTION"
++" from PLUSPBILLBATCH billbatch"
++" join pluspcustomer custom on billbatch.customer= custom.customer"
++" join PLUSPAGREEMENT agreement on billbatch.agreement=agreement.AGREEMENT and billbatch.orgid= agreement.orgid "
++" join PLUSPBILLLINE billline on billbatch.BILLBATCHNUM=billline.billbatchnum and billline.orgid= billbatch.orgid "
++" join PLUSPSALESORDER salesorder on billline.salesordernum= salesorder.salesordernum "
++" and billline.orgid= salesorder.orgid and billline.siteid= salesorder.siteid"
+
+// Include the Maximo where clause
++ " where " + params["where"]
++" "
+;
+
+maximoDataSet.setQuery(sqlText);]]></method>
+            <method name="fetch"><![CDATA[if (!maximoDataSet.fetch())
+	return (false);
+
+// Add a line for each output column
+// The specific get method should match the data type of the output column.
+row["invonum"] = maximoDataSet.getString("invonum");	
+row["PREMISES"] = maximoDataSet.getString("PREMISES");	
+row["STARTDATE"] =maximoDataSet.getDate("STARTDATE");
+row["ENDDATE"] =maximoDataSet.getDate("ENDDATE");
+row["LINEPRICE"] =maximoDataSet.getDecimal("LINEPRICE");
+row["DESCRIPTION"] =maximoDataSet.getString("DESCRIPTION");
+//row["PREMISES"] = maximoDataSet.getTimestamp("");	
+
+return (true);]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab-cell" id="343">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="344">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="maximoLandscape" id="47" extends="MaximoSystemLibrary.maximoLandscape">
+            <overridden-values>
+                <ref-entry baseId="304" name="NewGrid2" id="304"/>
+                <ref-entry baseId="305" id="305"/>
+                <ref-entry baseId="306" id="306"/>
+                <ref-entry baseId="307" id="307"/>
+                <ref-entry baseId="308" id="308"/>
+                <ref-entry baseId="309" id="309"/>
+                <ref-entry baseId="310" name="NewImage" id="310"/>
+                <ref-entry baseId="322" name="NewGrid" id="322"/>
+                <ref-entry baseId="323" id="323"/>
+                <ref-entry baseId="324" id="324"/>
+                <ref-entry baseId="325" id="325"/>
+                <ref-entry baseId="326" id="326"/>
+                <ref-entry baseId="328" name="NewText" id="328"/>
+                <ref-entry baseId="327" id="327"/>
+                <ref-entry baseId="329" name="NewGrid1" id="329"/>
+                <ref-entry baseId="330" id="330"/>
+                <ref-entry baseId="331" id="331"/>
+                <ref-entry baseId="332" id="332"/>
+                <ref-entry baseId="333" id="333"/>
+                <ref-entry baseId="334" id="334"/>
+                <ref-entry baseId="335" name="NewAutoText" id="335"/>
+                <ref-entry baseId="336" id="336"/>
+                <ref-entry baseId="337" name="NewText1" id="337"/>
+                <ref-entry baseId="338" id="338"/>
+                <ref-entry baseId="339" name="NewAutoText1" id="339"/>
+            </overridden-values>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table name="mainTable" id="7">
+            <property name="comments">09-19764@000</property>
+            <property name="width">100%</property>
+            <property name="dataSet">dataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">total_rec</property>
+                    <expression name="expression">Total.count()</expression>
+                    <property name="dataType">any</property>
+                </structure>
+                <structure>
+                    <property name="name">INVOICENUM</property>
+                    <text-property name="displayName" key="Invoicenum">Invoice . No.</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["INVOICENUM"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">InvoiceDate</property>
+                    <text-property name="displayName">InvoiceDate</text-property>
+                    <expression name="expression" type="javascript">BirtDateTime.date()</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">PREMISE</property>
+                    <text-property name="displayName" key="PREMISES">PREMISES</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PREMISE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">FromDate</property>
+                    <expression name="expression" type="javascript">now = new Date();&#13;
+new Date(now.getFullYear(), now.getMonth(), 1);</expression>
+                    <property name="dataType">date</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">toPeriod</property>
+                    <expression name="expression" type="javascript">now = new Date();&#13;
+new Date (new Date(now.getFullYear(), now.getMonth() +1 , 1) - 1);</expression>
+                    <property name="dataType">date</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">AGREEMENTSTART</property>
+                    <text-property name="displayName" key="STARTDATE">STARTDATE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AGREEMENTSTART"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">AGREEMENTEND</property>
+                    <text-property name="displayName" key="ENDDATE">ENDDATE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AGREEMENTEND"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">DESCR</property>
+                    <text-property name="displayName" key="DESCRIPTION">DESCRIPTION</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["DESCR"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">PRICE</property>
+                    <text-property name="displayName" key="LINEPRICE">LINEPRICE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PRICE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">CGST</property>
+                    <expression name="expression" type="javascript">dataSetRow["PRICE"]*0.09</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">SGST</property>
+                    <text-property name="displayName">SGST</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PRICE"]*0.09</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">INVAMNT</property>
+                    <expression name="expression" type="javascript">dataSetRow["PRICE"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Column Binding</property>
+                    <expression name="expression" type="javascript">var th = ['','thousand','million', 'billion','trillion'];&#13;
+&#13;
+var dg = ['zero','one','two','three','four', 'five','six','seven','eight','nine']; var tn = ['ten','eleven','twelve','thirteen', 'fourteen','fifteen','sixteen', 'seventeen','eighteen','nineteen']; var tw = ['twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety']; function toWords(s){s = s.toString(); s = s.replace(/[\, ]/g,''); if (s != parseFloat(s)) return 'not a number'; var x = s.indexOf('.'); if (x == -1) x = s.length; if (x > 15) return 'too big'; var n = s.split(''); var str = ''; var sk = 0; for (var i=0; i &lt; x; i++) {if ((x-i)%3==2) {if (n == '1') {str += tn[Number(n[i+1])] + ' '; i++; sk=1;} else if (n!=0) {str += tw[n-2] + ' ';sk=1;}} else if (n!=0) {str += dg[n] +' '; if ((x-i)%3==0) str += 'hundred ';sk=1;} if ((x-i)%3==1) {if (sk) str += th[(x-i-1)/3] + ' ';sk=0;}} if (x != s.length) {var y = s.length; str += 'point '; for (var i=x+1; i&lt;y; i++) str += dg[n] +' ';} return str.replace(/\s+/g,' ');}</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">AMOUNTWORDS</property>
+                    <expression name="expression" type="javascript">var th = ['','thousand','million', 'billion','trillion'];&#13;
+&#13;
+var dg = ['zero','one','two','three','four', 'five','six','seven','eight','nine']; var tn = ['ten','eleven','twelve','thirteen', 'fourteen','fifteen','sixteen', 'seventeen','eighteen','nineteen']; var tw = ['twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety']; function toWords(s){s = s.toString(); s = s.replace(/[\, ]/g,''); if (s != parseFloat(s)) return 'not a number'; var x = s.indexOf('.'); if (x == -1) x = s.length; if (x > 15) return 'too big'; var n = s.split(''); var str = ''; var sk = 0; for (var i=0; i &lt; x; i++) {if ((x-i)%3==2) {if (n == '1') {str += tn[Number(n[i+1])] + ' '; i++; sk=1;} else if (n!=0) {str += tw[n-2] + ' ';sk=1;}} else if (n!=0) {str += dg[n] +' '; if ((x-i)%3==0) str += 'hundred ';sk=1;} if ((x-i)%3==1) {if (sk) str += th[(x-i-1)/3] + ' ';sk=0;}} if (x != s.length) {var y = s.length; str += 'point '; for (var i=x+1; i&lt;y; i++) str += dg[n] +' ';} return str.replace(/\s+/g,' ');}&#13;
+&#13;
+row["AMOUNTWORDS"]=row["PRICE"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">50</property>
+            <column id="83"/>
+            <column id="79"/>
+            <column id="91"/>
+            <column id="87"/>
+            <column id="17"/>
+            <column id="18"/>
+            <header>
+                <row id="180">
+                    <property name="style">title</property>
+                    <property name="height">0.8680555555555556in</property>
+                    <cell id="181">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <label id="345">
+                            <property name="fontSize">14pt</property>
+                            <property name="textAlign">center</property>
+                            <property name="refTemplateParameter">NewTemplateParameterDefinition</property>
+                            <text-property name="text">KHIVRAJ MOTORS PVT LTD</text-property>
+                        </label>
+                        <label id="346">
+                            <property name="textAlign">center</property>
+                            <text-property name="text">623, Anna Salai, Thousand Lights, Chennai</text-property>
+                        </label>
+                        <label id="347">
+                            <property name="borderBottomStyle">solid</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="textAlign">center</property>
+                            <text-property name="text">GST No : 33AAACK2572Q1Z9 State Name: TamilNadu, Code : 33</text-property>
+                        </label>
+                    </cell>
+                </row>
+                <row id="173">
+                    <property name="height">1.5069444444444444in</property>
+                    <cell id="174">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <label id="348">
+                            <property name="fontSize">13pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#444E68</property>
+                            <property name="textUnderline">underline</property>
+                            <property name="textAlign">center</property>
+                            <text-property name="text">TAX INVOICE</text-property>
+                        </label>
+                        <grid id="419">
+                            <column id="420">
+                                <property name="width">3.1597222222222223in</property>
+                            </column>
+                            <column id="421">
+                                <property name="width">1.4166666666666667in</property>
+                            </column>
+                            <column id="422">
+                                <property name="width">2.3541666666666665in</property>
+                            </column>
+                            <column id="423">
+                                <property name="width">2.9722222222222223in</property>
+                            </column>
+                            <row id="424">
+                                <cell id="425">
+                                    <data id="454"/>
+                                </cell>
+                                <cell id="426"/>
+                                <cell id="427">
+                                    <label id="460">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">Invoice No:</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="428">
+                                    <data id="765">
+                                        <property name="resultSetColumn">INVOICENUM</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="429">
+                                <cell id="430">
+                                    <data id="455"/>
+                                </cell>
+                                <cell id="431"/>
+                                <cell id="432"/>
+                                <cell id="433"/>
+                            </row>
+                            <row id="434">
+                                <cell id="435">
+                                    <data id="456"/>
+                                </cell>
+                                <cell id="436"/>
+                                <cell id="437">
+                                    <label id="461">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">Date:</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="438">
+                                    <data id="464">
+                                        <property name="resultSetColumn">InvoiceDate</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="439">
+                                <cell id="440">
+                                    <data id="457"/>
+                                </cell>
+                                <cell id="441"/>
+                                <cell id="442"/>
+                                <cell id="443"/>
+                            </row>
+                            <row id="444">
+                                <cell id="445">
+                                    <data id="458"/>
+                                </cell>
+                                <cell id="446"/>
+                                <cell id="447">
+                                    <label id="462">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">Service Accounting Code:</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="448">
+                                    <data id="465"/>
+                                </cell>
+                            </row>
+                            <row id="449">
+                                <cell id="450">
+                                    <data id="459"/>
+                                </cell>
+                                <cell id="451"/>
+                                <cell id="452"/>
+                                <cell id="453"/>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="166">
+                    <property name="height">1.3194444444444444in</property>
+                    <cell id="167">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <grid id="466">
+                            <column id="467">
+                                <property name="width">4.013888888888889in</property>
+                            </column>
+                            <column id="468">
+                                <property name="width">1.4027777777777777in</property>
+                            </column>
+                            <column id="469">
+                                <property name="width">4.486111111111111in</property>
+                            </column>
+                            <row id="470">
+                                <cell id="471">
+                                    <label id="490">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">left</property>
+                                        <text-property name="text">Dear Sir,</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="472"/>
+                                <cell id="473"/>
+                            </row>
+                            <row id="474">
+                                <cell id="475">
+                                    <label id="491">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Rental Claim for the Premises</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="476"/>
+                                <cell id="477">
+                                    <data name="PREMISES" id="764">
+                                        <property name="resultSetColumn">PREMISE</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="478">
+                                <cell id="479">
+                                    <label id="492">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Period</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="480"/>
+                                <cell id="481">
+                                    <grid id="537">
+                                        <column id="538">
+                                            <property name="width">1.6944444444444444in</property>
+                                        </column>
+                                        <column id="539">
+                                            <property name="width">0.8541666666666666in</property>
+                                        </column>
+                                        <column id="540">
+                                            <property name="width">1.8958333333333333in</property>
+                                        </column>
+                                        <row id="541">
+                                            <cell id="542">
+                                                <data name="fromPeriod" id="546">
+                                                    <property name="resultSetColumn">FromDate</property>
+                                                </data>
+                                            </cell>
+                                            <cell id="543">
+                                                <label id="545">
+                                                    <property name="fontSize">9pt</property>
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">to</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="544">
+                                                <data name="toPeriod" id="547">
+                                                    <structure name="dateTimeFormat">
+                                                        <property name="category">Medium Date</property>
+                                                        <property name="pattern">Medium Date</property>
+                                                    </structure>
+                                                    <property name="resultSetColumn">toPeriod</property>
+                                                </data>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                            </row>
+                            <row id="482">
+                                <cell id="483">
+                                    <label id="493">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Rental Agreement Date</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="484"/>
+                                <cell id="485">
+                                    <data name="STARTDATE" id="766">
+                                        <property name="resultSetColumn">AGREEMENTSTART</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="486">
+                                <cell id="487">
+                                    <label id="494">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Validity</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="488"/>
+                                <cell id="489">
+                                    <data name="ENDDATE" id="767">
+                                        <property name="resultSetColumn">AGREEMENTEND</property>
+                                    </data>
+                                    <label id="550">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">AS PER THE AGREEMENT</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="144">
+                    <property name="height">0.9097222222222222in</property>
+                    <cell id="145">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <grid id="551">
+                            <column id="552">
+                                <property name="width">8.180555555555555in</property>
+                            </column>
+                            <column id="553">
+                                <property name="width">0.1388888888888889in</property>
+                            </column>
+                            <column id="554">
+                                <property name="width">3.923611111111111in</property>
+                            </column>
+                            <row id="555">
+                                <cell id="556">
+                                    <label id="603">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Description</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="557"/>
+                                <cell id="558">
+                                    <label id="604">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Value in Rs</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="559">
+                                <cell id="560">
+                                    <grid id="636">
+                                        <property name="width">7.104166666666667in</property>
+                                        <column id="637">
+                                            <property name="width">1.6145833333333333in</property>
+                                        </column>
+                                        <column id="638">
+                                            <property name="width">0.6666666666666666in</property>
+                                        </column>
+                                        <column id="639">
+                                            <property name="width">0.2916666666666667in</property>
+                                        </column>
+                                        <column id="640">
+                                            <property name="width">0.6527777777777778in</property>
+                                        </column>
+                                        <column id="641">
+                                            <property name="width">0.4930555555555556in</property>
+                                        </column>
+                                        <column id="642">
+                                            <property name="width">0.6388888888888888in</property>
+                                        </column>
+                                        <column id="656">
+                                            <property name="width">1.2222222222222223in</property>
+                                        </column>
+                                        <column id="660">
+                                            <property name="width">1.5416666666666667in</property>
+                                        </column>
+                                        <row id="643">
+                                            <cell id="644">
+                                                <label id="650">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">RENTAL INCOME - NANDANAM (</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="645">
+                                                <data id="651"/>
+                                            </cell>
+                                            <cell id="646">
+                                                <label id="652">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">to</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="647">
+                                                <data id="653"/>
+                                            </cell>
+                                            <cell id="648">
+                                                <label id="654">
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">) for </text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="649">
+                                                <data id="658"/>
+                                            </cell>
+                                            <cell id="655">
+                                                <label id="661">
+                                                    <property name="backgroundAttachment">scroll</property>
+                                                    <property name="backgroundPositionX">0%</property>
+                                                    <property name="backgroundPositionY">0%</property>
+                                                    <property name="backgroundRepeat">repeat</property>
+                                                    <property name="fontFamily">"Verdana", "Arial", sans-serif</property>
+                                                    <property name="fontSize">7pt</property>
+                                                    <property name="fontWeight">bold</property>
+                                                    <property name="fontStyle">italic</property>
+                                                    <property name="fontVariant">normal</property>
+                                                    <property name="color">#444E68</property>
+                                                    <property name="textLineThrough">none</property>
+                                                    <property name="textOverline">none</property>
+                                                    <property name="textUnderline">none</property>
+                                                    <property name="borderBottomColor">black</property>
+                                                    <property name="borderBottomStyle">none</property>
+                                                    <property name="borderBottomWidth">medium</property>
+                                                    <property name="borderLeftColor">black</property>
+                                                    <property name="borderLeftStyle">none</property>
+                                                    <property name="borderLeftWidth">medium</property>
+                                                    <property name="borderRightColor">black</property>
+                                                    <property name="borderRightStyle">none</property>
+                                                    <property name="borderRightWidth">medium</property>
+                                                    <property name="borderTopColor">black</property>
+                                                    <property name="borderTopStyle">none</property>
+                                                    <property name="borderTopWidth">medium</property>
+                                                    <property name="marginTop">0pt</property>
+                                                    <property name="marginLeft">0pt</property>
+                                                    <property name="marginBottom">0pt</property>
+                                                    <property name="marginRight">0pt</property>
+                                                    <property name="paddingTop">1pt</property>
+                                                    <property name="paddingLeft">1pt</property>
+                                                    <property name="paddingBottom">1pt</property>
+                                                    <property name="paddingRight">1pt</property>
+                                                    <property name="textAlign">center</property>
+                                                    <property name="letterSpacing">normal</property>
+                                                    <property name="lineHeight">normal</property>
+                                                    <property name="orphans">2</property>
+                                                    <property name="textTransform">none</property>
+                                                    <property name="whiteSpace">normal</property>
+                                                    <property name="widows">2</property>
+                                                    <property name="wordSpacing">normal</property>
+                                                    <property name="display">block</property>
+                                                    <property name="pageBreakAfter">auto</property>
+                                                    <property name="pageBreakBefore">auto</property>
+                                                    <property name="pageBreakInside">auto</property>
+                                                    <property name="showIfBlank">false</property>
+                                                    <property name="canShrink">false</property>
+                                                    <property name="overflow">hidden</property>
+                                                    <text-property name="text">sqft @</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="659">
+                                                <data id="662"/>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="561"/>
+                                <cell id="562">
+                                    <data id="667"/>
+                                </cell>
+                            </row>
+                            <row id="563">
+                                <property name="height">0.375in</property>
+                                <cell id="564">
+                                    <data name="DESCRIPTION" id="768">
+                                        <property name="resultSetColumn">DESCR</property>
+                                    </data>
+                                </cell>
+                                <cell id="565"/>
+                                <cell id="566">
+                                    <data name="LINEPRICE" id="769">
+                                        <property name="resultSetColumn">PRICE</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="567">
+                                <cell id="568"/>
+                                <cell id="569"/>
+                                <cell id="570"/>
+                            </row>
+                            <row id="571">
+                                <cell id="572">
+                                    <label id="663">
+                                        <property name="fontSize">7pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">Gross Total</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="573"/>
+                                <cell id="574">
+                                    <data name="TOTAL" id="770">
+                                        <property name="resultSetColumn">PRICE</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="575">
+                                <cell id="576">
+                                    <label id="664">
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">CGST 9% HO</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="577"/>
+                                <cell id="578">
+                                    <data id="670">
+                                        <property name="resultSetColumn">CGST</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="579">
+                                <cell id="580">
+                                    <label id="605">
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">SGST 9% HO</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="581"/>
+                                <cell id="582">
+                                    <data name="SGST" id="671">
+                                        <property name="resultSetColumn">SGST</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="583">
+                                <cell id="584"/>
+                                <cell id="585"/>
+                                <cell id="586"/>
+                            </row>
+                            <row id="587">
+                                <cell id="588"/>
+                                <cell id="589"/>
+                                <cell id="590"/>
+                            </row>
+                            <row id="591">
+                                <cell id="592"/>
+                                <cell id="593"/>
+                                <cell id="594"/>
+                            </row>
+                            <row id="595">
+                                <cell id="596">
+                                    <label id="672">
+                                        <property name="fontSize">10pt</property>
+                                        <property name="fontWeight">bold</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="borderBottomStyle">solid</property>
+                                        <property name="borderBottomWidth">medium</property>
+                                        <property name="borderLeftStyle">solid</property>
+                                        <property name="borderLeftWidth">medium</property>
+                                        <property name="borderRightStyle">solid</property>
+                                        <property name="borderRightWidth">medium</property>
+                                        <property name="borderTopStyle">solid</property>
+                                        <property name="borderTopWidth">medium</property>
+                                        <property name="textAlign">right</property>
+                                        <text-property name="text">Invoice Amount</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="597">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">medium</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">medium</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">medium</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">medium</property>
+                                </cell>
+                                <cell id="598">
+                                    <property name="borderBottomStyle">solid</property>
+                                    <property name="borderBottomWidth">medium</property>
+                                    <property name="borderLeftStyle">solid</property>
+                                    <property name="borderLeftWidth">medium</property>
+                                    <property name="borderRightStyle">solid</property>
+                                    <property name="borderRightWidth">medium</property>
+                                    <property name="borderTopStyle">solid</property>
+                                    <property name="borderTopWidth">medium</property>
+                                    <data id="673">
+                                        <property name="resultSetColumn">INVAMNT</property>
+                                    </data>
+                                </cell>
+                            </row>
+                            <row id="599">
+                                <cell id="600">
+                                    <label id="674">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">left</property>
+                                        <text-property name="text">Amount Chargeable (in words)</text-property>
+                                    </label>
+                                    <data name="AMOUNTWORDS" id="775">
+                                        <property name="resultSetColumn">AMOUNTWORDS</property>
+                                    </data>
+                                </cell>
+                                <cell id="601"/>
+                                <cell id="602"/>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+            </header>
+            <footer>
+                <row id="14">
+                    <property name="height">1.6041666666666667in</property>
+                    <cell id="82">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <grid id="703">
+                            <column id="704">
+                                <property name="width">5.423611111111111in</property>
+                            </column>
+                            <column id="705">
+                                <property name="width">1.9444444444444444in</property>
+                            </column>
+                            <column id="706">
+                                <property name="width">4.875in</property>
+                            </column>
+                            <row id="707">
+                                <cell id="708">
+                                    <label id="731">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="color">#444E68</property>
+                                        <text-property name="text">Wheather tax to be paid under reverse charge - NO</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="709"/>
+                                <cell id="710">
+                                    <label id="732">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="fontWeight">normal</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">center</property>
+                                        <text-property name="text">for Khivraj Motors Pvt Ltd</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="711">
+                                <cell id="712">
+                                    <label id="733">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textUnderline">underline</property>
+                                        <property name="textAlign">center</property>
+                                        <text-property name="text">Company's Bank Details</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="713"/>
+                                <cell id="714"/>
+                            </row>
+                            <row id="715">
+                                <cell id="716">
+                                    <grid id="734">
+                                        <column id="735"/>
+                                        <column id="736"/>
+                                        <row id="737">
+                                            <cell id="738">
+                                                <label id="740">
+                                                    <property name="fontSize">9pt</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">Bank Name</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="739"/>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="717"/>
+                                <cell id="718"/>
+                            </row>
+                            <row id="719">
+                                <cell id="720">
+                                    <grid id="742">
+                                        <column id="743"/>
+                                        <column id="744"/>
+                                        <row id="745">
+                                            <cell id="746">
+                                                <label id="748">
+                                                    <property name="fontSize">9pt</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">A/c No.</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="747">
+                                                <data id="749"/>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="721"/>
+                                <cell id="722"/>
+                            </row>
+                            <row id="723">
+                                <cell id="724">
+                                    <grid id="750">
+                                        <column id="751"/>
+                                        <column id="752"/>
+                                        <row id="753">
+                                            <cell id="754">
+                                                <label id="756">
+                                                    <property name="fontSize">9pt</property>
+                                                    <property name="color">#444E68</property>
+                                                    <text-property name="text">Branch &amp; IFS Code</text-property>
+                                                </label>
+                                            </cell>
+                                            <cell id="755">
+                                                <data id="757"/>
+                                            </cell>
+                                        </row>
+                                    </grid>
+                                </cell>
+                                <cell id="725"/>
+                                <cell id="726">
+                                    <label id="758">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">center</property>
+                                        <text-property name="text">Authorized Signatory</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="727">
+                                <cell id="728"/>
+                                <cell id="729"/>
+                                <cell id="730"/>
+                            </row>
+                        </grid>
+                    </cell>
+                </row>
+                <row id="207">
+                    <property name="height">1.3888888888888888in</property>
+                    <cell id="208">
+                        <property name="colSpan">6</property>
+                        <property name="rowSpan">1</property>
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderTopColor">#000000</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <grid id="216">
+                            <property name="height">0.7847222222222222in</property>
+                            <property name="width">100%</property>
+                            <column id="217">
+                                <property name="style">summarylabel</property>
+                                <property name="width">0.1388888888888889in</property>
+                            </column>
+                            <column id="218">
+                                <property name="style">summarydata</property>
+                                <property name="width">12.104166666666666in</property>
+                            </column>
+                            <row id="219">
+                                <property name="height">0.7847222222222222in</property>
+                                <cell id="220"/>
+                                <cell id="221">
+                                    <label id="760">
+                                        <property name="fontSize">9pt</property>
+                                        <property name="color">#444E68</property>
+                                        <property name="textAlign">center</property>
+                                        <text-property name="text">TERMS &amp; CONDITIONS</text-property>
+                                    </label>
+                                    <text id="761">
+                                        <property name="color">#444E68</property>
+                                        <property name="contentType">auto</property>
+                                        <text-property name="content"><![CDATA[1. Any discrepancies found in the statement should be intimated within 3 days from the date of receiving invoice, failing which it would be construct to be corrected and binding.
+2. Payment to be made within 10 days from the date of receipt of invoice or else interest @ 2% per month will be charges for the delay period]]></text-property>
+                                    </text>
+                                </cell>
+                            </row>
+                        </grid>
+                        <label id="222">
+                            <property name="color">#444E68</property>
+                            <text-property name="text">If you have any query about this invoicce please contact 044-4226941/600, e-mail:mrs.nandanam@khivrajmail.com, finance@khivirajmotors.com</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>
